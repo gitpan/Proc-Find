@@ -1,7 +1,7 @@
 package Proc::Find;
 
 our $DATE = '2014-11-23'; # DATE
-our $VERSION = '0.01'; # VERSION
+our $VERSION = '0.02'; # VERSION
 
 use 5.010001;
 use strict;
@@ -18,12 +18,18 @@ our @EXPORT_OK = qw(
                        proc_exists
                );
 
+our $CACHE = 0;
+
+my $_table_res;
 sub _table {
     state $pt = do {
         require Proc::ProcessTable;
         Proc::ProcessTable->new;
     };
-    $pt->table;
+    if (!$CACHE || !$_table_res) {
+        $_table_res = $pt->table;
+    }
+    $_table_res;
 }
 
 sub find_proc {
@@ -32,7 +38,8 @@ sub find_proc {
     my @unknown_args = grep {!/\A(
                                    pid|name|cmndline|exec|
                                    user|uid|euser|euid|
-                                   table|detail
+                                   table|detail|
+                                   result_max
                                )\z/x} keys %args;
     die "Unknown arguments to find_proc(): ".join(", ", @unknown_args)
         if @unknown_args;
@@ -111,13 +118,17 @@ sub find_proc {
         } else {
             push @res, $p->{pid};
         }
+
+        if (defined $args{result_max}) {
+            last if @res >= $args{result_max};
+        }
     }
 
     \@res;
 }
 
 sub proc_exists {
-    @{ find_proc(@_) } > 0 ? 1:0;
+    @{ find_proc(@_, result_max=>1) } > 0 ? 1:0;
 }
 
 sub find_any_proc {
@@ -184,7 +195,7 @@ Proc::Find - Find processes by name, PID, or some other attributes
 
 =head1 VERSION
 
-This document describes version 0.01 of Proc::Find (from Perl distribution Proc-Find), released on 2014-11-23.
+This document describes version 0.02 of Proc::Find (from Perl distribution Proc-Find), released on 2014-11-23.
 
 =head1 SYNOPSIS
 
@@ -206,6 +217,15 @@ existence by name, something that is commonly done in shell scripts using:
  pgrep name
 
 and also some routines, C<find_*()>, to list processes matching some criteria.
+
+=head1 VARIABLES
+
+=head2 $Proc::Find::CACHE => bool (default: 0)
+
+If set to true, will cache the call to C<Proc::ProcessTable>'s C<table()> so
+subsequent invocation to C<find_proc()> or C<proc_exists> doesn't have to call
+the method again. But this also means that the process check/listing will be
+done on a past/stale process table.
 
 =head1 FUNCTIONS
 
@@ -283,6 +303,8 @@ If set to true, then will return all processes I<not> matching the criteria.
 Supply result from C<Proc::ProcessTable> object's C<table()>. This can be used
 to reuse the C<table()> cached result instead of repeatedly call C<table()> on
 every invocation.
+
+See also C<$Proc::Find::CACHE>.
 
 =item * detail => bool (default: 0)
 

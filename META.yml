@@ -23,7 +23,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Proc-Find
   homepage: https://metacpan.org/release/Proc-Find
   repository: git://github.com/perlancar/perl-Proc-Find.git
-version: '0.01'
+version: '0.02'
 x_Dist_Zilla:
   perl:
     version: '5.018002'

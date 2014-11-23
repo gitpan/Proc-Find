@@ -2,7 +2,7 @@ NAME
     Proc::Find - Find processes by name, PID, or some other attributes
 
 VERSION
-    This document describes version 0.01 of Proc::Find (from Perl
+    This document describes version 0.02 of Proc::Find (from Perl
     distribution Proc-Find), released on 2014-11-23.
 
 SYNOPSIS
@@ -25,6 +25,13 @@ DESCRIPTION
 
     and also some routines, "find_*()", to list processes matching some
     criteria.
+
+VARIABLES
+  $Proc::Find::CACHE => bool (default: 0)
+    If set to true, will cache the call to "Proc::ProcessTable"'s "table()"
+    so subsequent invocation to "find_proc()" or "proc_exists" doesn't have
+    to call the method again. But this also means that the process
+    check/listing will be done on a past/stale process table.
 
 FUNCTIONS
   find_proc(%args) => \@pids (or \@procs)
@@ -102,6 +109,8 @@ FUNCTIONS
         Supply result from "Proc::ProcessTable" object's "table()". This can
         be used to reuse the "table()" cached result instead of repeatedly
         call "table()" on every invocation.
+
+        See also $Proc::Find::CACHE.
 
     *   detail => bool (default: 0)
 
