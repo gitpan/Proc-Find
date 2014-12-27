@@ -1,7 +1,7 @@
 package Proc::Find;
 
-our $DATE = '2014-11-23'; # DATE
-our $VERSION = '0.02'; # VERSION
+our $DATE = '2014-12-27'; # DATE
+our $VERSION = '0.03'; # VERSION
 
 use 5.010001;
 use strict;
@@ -50,6 +50,11 @@ sub find_proc {
 
     my @res;
     for my $p (@$table) {
+        # create extra fields
+        $p->{name} = $p->{cmndline};
+        $p->{name} =~ s/\s.*//;
+        $p->{name} =~ s!.+/!!;
+
         my $cond = 0;
       COND:
         {
@@ -57,11 +62,10 @@ sub find_proc {
                 last COND unless $p->{pid} == $args{pid};
             }
             if (defined $args{name}) {
-                (my $name = $p->{cmndline}) =~ s/\s.*//;
                 if (ref($args{name}) eq 'Regexp') {
-                    last COND unless $name =~ $args{name};
+                    last COND unless $p->{name} =~ $args{name};
                 } else {
-                    last COND unless $name eq $args{name};
+                    last COND unless $p->{name} eq $args{name};
                 }
             }
             if (defined $args{cmndline}) {
@@ -195,7 +199,7 @@ Proc::Find - Find processes by name, PID, or some other attributes
 
 =head1 VERSION
 
-This document describes version 0.02 of Proc::Find (from Perl distribution Proc-Find), released on 2014-11-23.
+This document describes version 0.03 of Proc::Find (from Perl distribution Proc-Find), released on 2014-12-27.
 
 =head1 SYNOPSIS
 
