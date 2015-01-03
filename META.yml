@@ -24,10 +24,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Proc-Find
   homepage: https://metacpan.org/release/Proc-Find
   repository: git://github.com/perlancar/perl-Proc-Find.git
-version: '0.03'
+version: '0.04'
 x_Dist_Zilla:
   perl:
-    version: '5.018001'
+    version: '5.018002'
   plugins:
     -
       class: Dist::Zilla::Plugin::GatherDir
@@ -204,7 +204,7 @@ x_Dist_Zilla:
             -
               class: Pod::Weaver::Section::Completion::PerinciCmdLine
               name: '@Author::PERLANCAR/Completion::PerinciCmdLine'
-              version: '0.08'
+              version: '0.09'
             -
               class: Pod::Weaver::Section::Homepage::DefaultCPAN
               name: '@Author::PERLANCAR/Homepage::DefaultCPAN'
@@ -246,7 +246,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Rinci::Validate
       name: '@Author::PERLANCAR/Rinci::Validate'
-      version: '0.19'
+      version: '0.20'
     -
       class: Dist::Zilla::Plugin::SetScriptShebang
       name: '@Author::PERLANCAR/SetScriptShebang'
@@ -275,6 +275,10 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Rinci
       name: '@Author::PERLANCAR/Test::Rinci'
+      version: '0.01'
+    -
+      class: Dist::Zilla::Plugin::PERLANCAR::GenTodoMd
+      name: '@Author::PERLANCAR/PERLANCAR::GenTodoMd'
       version: '0.01'
     -
       class: Dist::Zilla::Plugin::Prereqs

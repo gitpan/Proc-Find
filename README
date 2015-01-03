@@ -140,30 +140,6 @@ FUNCTIONS
      # find all processes belonging to either user
      find_any_proc([{user=>'ujang'}, {user=>'titin'}]);
 
-TODO
-
-    Option to sort result.
-
-    Search by PPID.
-
-    Search by GID (what about additional/extra groups?).
-
-    Search by priority.
-
-    Search by start time.
-
-    Search by memory size.
-
-    Search by controlling terminal.
-
-    Search all descendants of a process.
-
-    Search all parent processes of a process (thus subsuming the
-    functionality of and rendering SHARYANTO::Proc::Util unnecessary).
-
-    Write CLI utility pfind, similar to pgrep. Like pgrep, Can also send
-    signal in addition to listing processes.
-
 SEE ALSO
 
     Proc::Exists can be used to check if one or more PIDs exist. If you are
